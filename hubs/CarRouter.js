@@ -44,4 +44,33 @@ router.post("/", (req, res) => {
     });
 });
 
+router.put("/:id", (req, res) => {
+  const changes = req.body;
+  const { id } = req.params;
+  db("cars")
+    .where({ id })
+    .update(changes)
+    .then(count => {
+      res.status(200).json(count);
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).json({ error: "Failed to update the Car information" });
+    });
+});
+
+router.delete("/:id", (req, res) => {
+  const { id } = req.params;
+  db("cars")
+    .where({ id })
+    .del()
+    .then(count => {
+      res.status(200).json(count);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ error: "Failed to remove the Car" });
+    });
+});
+
 module.exports = router;
